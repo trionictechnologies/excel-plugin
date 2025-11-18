@@ -1,25 +1,30 @@
 #!/usr/bin/env python3
 """
-Main Classification Script
-Classify ledgers in Excel files using trained models
+AI Ledger Classification Tool
+Uses OpenAI API to classify ledgers like a Chartered Accountant
 """
 
 import argparse
 import sys
 from pathlib import Path
+import pandas as pd
 from datetime import datetime
+from tqdm import tqdm
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / 'src'))
 
 from config_loader import ConfigLoader
-from classifier import LedgerClassifier
+from ledger_agent import LedgerClassificationAgent
 from excel_integration import ExcelHandler
 
 
-def classify_file(input_file, output_file, classification_level, config_file='config.yaml'):
+def classify_file(input_file: str, 
+                 output_file: str, 
+                 classification_level: int,
+                 config_file: str = 'config.yaml'):
     """
-    Classify ledgers in an Excel file
+    Classify ledgers in an Excel file using AI agent
     
     Args:
         input_file: Input Excel file path
@@ -28,106 +33,120 @@ def classify_file(input_file, output_file, classification_level, config_file='co
         config_file: Configuration file path
     """
     print("\n" + "="*80)
-    print(f"LEDGER CLASSIFICATION - LEVEL {classification_level}")
+    print(f"🤖 AI LEDGER CLASSIFICATION - LEVEL {classification_level}")
     print("="*80 + "\n")
     
     # Load configuration
-    print("Loading configuration...")
+    print("📋 Loading configuration...")
     config = ConfigLoader(config_file)
     print("✓ Configuration loaded\n")
     
+    # Initialize agent
+    print("🤖 Initializing AI Agent...")
+    agent = LedgerClassificationAgent(config)
+    print(f"✓ Using OpenAI model: {agent.model}\n")
+    
     # Initialize Excel handler
-    print("Initializing Excel handler...")
     excel_handler = ExcelHandler(config)
-    print("✓ Excel handler initialized\n")
     
     # Read input file
-    print(f"Reading input file: {input_file}")
+    print(f"📂 Reading input file: {input_file}")
     df = excel_handler.read_excel(input_file)
     print(f"✓ Loaded {len(df)} records\n")
     
     # Prepare data for classification
-    print("Preparing data for classification...")
+    print("🔍 Identifying ledgers to classify...")
     df, indices_to_classify = excel_handler.prepare_data_for_classification(
-        df,
-        classification_level
+        df, classification_level
     )
     print(f"✓ Found {len(indices_to_classify)} ledgers to classify\n")
     
     if len(indices_to_classify) == 0:
-        print("No ledgers to classify. All ledgers already have classifications.")
+        print("ℹ️  No ledgers to classify. All already have classifications.")
         return
     
-    # Initialize classifier
-    print(f"Loading classification model (Level {classification_level})...")
-    classifier = LedgerClassifier(config, classification_level=classification_level)
-    classifier.load_model()
-    print("✓ Model loaded successfully\n")
-    
-    # Classify
-    print("Classifying ledgers...")
+    # Get ledgers to classify
     input_col = config.get_excel_config()['input_column']
+    ledgers_to_classify = df.loc[indices_to_classify, input_col].tolist()
     
-    if classification_level == 3:
-        results = classifier.classify_batch(
-            df.loc[indices_to_classify, input_col].tolist()
-        )
-    else:
-        # Level 4 requires classification 3
-        results = classifier.classify_batch(
-            df.loc[indices_to_classify, input_col].tolist(),
-            df.loc[indices_to_classify, 'Classification 3'].tolist()
-        )
+    # For level 4, also get classification 3
+    classification_3_list = None
+    if classification_level == 4:
+        classification_3_list = df.loc[indices_to_classify, 'Classification 3'].tolist()
     
-    # Update DataFrame with results
+    # Classify using AI agent
+    print("🧠 Classifying ledgers with AI...\n")
+    
     output_col = f'Classification {classification_level}'
     confidence_col = f'{output_col} Confidence'
+    reasoning_col = f'{output_col} Reasoning'
     
-    for idx, (pred_class, confidence) in zip(indices_to_classify, results):
-        df.at[idx, output_col] = pred_class
-        df.at[idx, confidence_col] = confidence
+    # Add reasoning column if not exists
+    if reasoning_col not in df.columns:
+        df[reasoning_col] = ''
     
-    print(f"✓ Classified {len(indices_to_classify)} ledgers\n")
+    # Process each ledger with progress bar
+    with tqdm(total=len(indices_to_classify), desc="Classifying") as pbar:
+        for i, idx in enumerate(indices_to_classify):
+            ledger_name = ledgers_to_classify[i]
+            classification_3 = classification_3_list[i] if classification_3_list else None
+            
+            try:
+                classification, confidence, reasoning = agent.classify_single(
+                    ledger_name,
+                    classification_level=classification_level,
+                    classification_3=classification_3
+                )
+                
+                df.at[idx, output_col] = classification
+                df.at[idx, confidence_col] = confidence
+                df.at[idx, reasoning_col] = reasoning
+                
+            except Exception as e:
+                print(f"\n⚠️  Error classifying '{ledger_name}': {e}")
+                df.at[idx, output_col] = "Error"
+                df.at[idx, confidence_col] = 0.0
+                df.at[idx, reasoning_col] = str(e)
+            
+            pbar.update(1)
     
-    # Statistics
+    print(f"\n✓ Classified {len(indices_to_classify)} ledgers\n")
+    
+    # Calculate statistics
+    confidences = df.loc[indices_to_classify, confidence_col].tolist()
     confidence_threshold = config.get_excel_config().get('confidence_threshold', 0.7)
-    high_conf = sum(1 for _, conf in results if conf >= confidence_threshold)
-    low_conf = len(results) - high_conf
+    high_conf = sum(1 for c in confidences if c >= confidence_threshold)
+    low_conf = len(confidences) - high_conf
+    avg_conf = sum(confidences) / len(confidences) if confidences else 0
     
-    print("Classification Statistics:")
-    print(f"  - High confidence (≥{confidence_threshold:.0%}): {high_conf}")
-    print(f"  - Low confidence (<{confidence_threshold:.0%}): {low_conf}")
-    print(f"  - Average confidence: {sum(c for _, c in results) / len(results):.2%}\n")
+    print("📊 Classification Statistics:")
+    print(f"  ✓ High confidence (≥{confidence_threshold:.0%}): {high_conf}")
+    print(f"  ⚠️  Low confidence (<{confidence_threshold:.0%}): {low_conf}")
+    print(f"  📈 Average confidence: {avg_conf:.2%}\n")
     
     # Write output file
-    print(f"Writing results to: {output_file}")
+    print(f"💾 Writing results to: {output_file}")
     excel_handler.write_classifications(
-        df,
-        output_file,
-        classification_level,
-        highlight_low_confidence=True
+        df, output_file, classification_level, highlight_low_confidence=True
     )
     print("✓ Results saved\n")
     
     # Create report
     report_file = output_file.replace('.xlsx', '_report.xlsx')
-    print(f"Creating classification report: {report_file}")
-    excel_handler.create_classification_report(
-        df,
-        report_file,
-        classification_level
-    )
+    print(f"📊 Creating classification report: {report_file}")
+    excel_handler.create_classification_report(df, report_file, classification_level)
     print("✓ Report saved\n")
     
     print("="*80)
-    print("CLASSIFICATION COMPLETED SUCCESSFULLY")
+    print("✅ CLASSIFICATION COMPLETED SUCCESSFULLY")
     print("="*80 + "\n")
-    
-    return df
 
 
-def classify_text(ledger_name, classification_level, classification_3=None, 
-                 top_k=3, config_file='config.yaml'):
+def classify_text(ledger_name: str,
+                 classification_level: int,
+                 classification_3: str = None,
+                 show_alternatives: bool = False,
+                 config_file: str = 'config.yaml'):
     """
     Classify a single ledger name
     
@@ -135,42 +154,63 @@ def classify_text(ledger_name, classification_level, classification_3=None,
         ledger_name: Ledger name to classify
         classification_level: Classification level (3 or 4)
         classification_3: Classification 3 value (required for level 4)
-        top_k: Number of top predictions to show
+        show_alternatives: Show alternative classifications
         config_file: Configuration file path
     """
     # Load configuration
     config = ConfigLoader(config_file)
     
-    # Initialize classifier
-    classifier = LedgerClassifier(config, classification_level=classification_level)
-    classifier.load_model()
+    # Initialize agent
+    agent = LedgerClassificationAgent(config)
     
-    # Get top predictions
-    if classification_level == 4 and not classification_3:
-        print("Error: classification_3 is required for level 4 classification")
-        return
+    print(f"\n🤖 AI Ledger Classifier ({agent.model})")
+    print("="*70)
     
-    top_predictions = classifier.get_top_predictions(
-        ledger_name,
-        top_k=top_k,
-        classification_3=classification_3
-    )
+    if show_alternatives:
+        # Get top alternatives
+        results = agent.classify_with_alternatives(
+            ledger_name,
+            classification_level=classification_level,
+            classification_3=classification_3,
+            top_k=5
+        )
+        
+        print(f"\n📝 Ledger: {ledger_name}")
+        if classification_3:
+            print(f"📁 Classification 3: {classification_3}")
+        print(f"\n🎯 Top Predictions (Level {classification_level}):")
+        print("-" * 70)
+        
+        for i, result in enumerate(results, 1):
+            conf = result.get('confidence', 0)
+            bar = '█' * int(conf * 40)
+            print(f"\n{i}. {result['classification']}")
+            print(f"   Confidence: {conf:.1%} {bar}")
+            print(f"   Reasoning: {result['reasoning']}")
     
-    print(f"\nLedger: {ledger_name}")
-    if classification_3:
-        print(f"Classification 3: {classification_3}")
-    print(f"\nTop {top_k} Predictions (Level {classification_level}):")
-    print("-" * 60)
+    else:
+        # Single classification
+        classification, confidence, reasoning = agent.classify_single(
+            ledger_name,
+            classification_level=classification_level,
+            classification_3=classification_3
+        )
+        
+        print(f"\n📝 Ledger: {ledger_name}")
+        if classification_3:
+            print(f"📁 Classification 3: {classification_3}")
+        print(f"\n🎯 Classification (Level {classification_level}):")
+        print("-" * 70)
+        print(f"Category: {classification}")
+        print(f"Confidence: {confidence:.1%}")
+        print(f"Reasoning: {reasoning}")
     
-    for i, (pred_class, confidence) in enumerate(top_predictions, 1):
-        print(f"{i}. {pred_class:<40} {confidence:>6.2%}")
-    
-    print()
+    print("\n" + "="*70 + "\n")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Classify Ledgers using AI',
+        description='AI-Powered Ledger Classification using OpenAI',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -180,26 +220,28 @@ Examples:
   # Classify an Excel file (Level 4)
   python classify_ledgers.py --input ledgers.xlsx --output classified.xlsx --level 4
   
-  # Classify a single ledger name
+  # Classify a single ledger
   python classify_ledgers.py --text "Purchase of Raw Material" --level 3
   
-  # Get top 5 predictions for a ledger
-  python classify_ledgers.py --text "Salaries and Wages" --level 3 --top-k 5
+  # Get alternative classifications
+  python classify_ledgers.py --text "Employee Salaries" --level 3 --alternatives
+  
+  # Classify with context (Level 4)
+  python classify_ledgers.py --text "Opening Stock" --level 4 --class3 "Cost of Goods Sold"
+
+Note: Set OPENAI_API_KEY in .env file before running
         """
     )
     
-    parser.add_argument('--input', type=str,
-                       help='Input Excel file path')
-    parser.add_argument('--output', type=str,
-                       help='Output Excel file path')
-    parser.add_argument('--text', type=str,
-                       help='Single ledger name to classify')
+    parser.add_argument('--input', type=str, help='Input Excel file path')
+    parser.add_argument('--output', type=str, help='Output Excel file path')
+    parser.add_argument('--text', type=str, help='Single ledger name to classify')
     parser.add_argument('--level', type=int, choices=[3, 4], required=True,
                        help='Classification level (3 or 4)')
     parser.add_argument('--class3', type=str,
                        help='Classification 3 value (required for level 4 when using --text)')
-    parser.add_argument('--top-k', type=int, default=3,
-                       help='Number of top predictions to show (for --text mode)')
+    parser.add_argument('--alternatives', action='store_true',
+                       help='Show alternative classifications (for --text mode)')
     parser.add_argument('--config', type=str, default='config.yaml',
                        help='Path to configuration file')
     
@@ -212,32 +254,27 @@ Examples:
                 args.text,
                 args.level,
                 args.class3,
-                args.top_k,
+                args.alternatives,
                 args.config
             )
         
         elif args.input and args.output:
             # File classification
             if not Path(args.input).exists():
-                print(f"Error: Input file not found: {args.input}")
+                print(f"❌ Error: Input file not found: {args.input}")
                 sys.exit(1)
             
-            classify_file(
-                args.input,
-                args.output,
-                args.level,
-                args.config
-            )
+            classify_file(args.input, args.output, args.level, args.config)
         
         else:
             parser.print_help()
-            print("\nError: Either provide --input and --output, or provide --text")
+            print("\n❌ Error: Either provide --input and --output, or provide --text")
             sys.exit(1)
         
-        print("✓ Success!")
+        print("✅ Success!")
         
     except Exception as e:
-        print(f"\n✗ Classification failed with error: {e}")
+        print(f"\n❌ Classification failed: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
