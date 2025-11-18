@@ -1,0 +1,149 @@
+# Ledger Classification Configuration
+
+# Classification Hierarchy
+classification_hierarchy:
+  P&L Account:
+    classification_3:
+      - Cost of Goods Sold
+      - Employee Benefits Expenses
+      - Finance Costs
+      - Depreciation and Amortization Expense
+      - Other Expenses
+      - Other Profit and Loss Items
+      - PPE & IA (Net)
+      - Investments
+      - Deferred Tax (Net)
+      - Loans and Advances
+      - Trade Receivables
+      - Cash and Bank Balance
+      - Other Assets
+    
+    classification_4:
+      Cost of Goods Sold:
+        - Purchase of Raw Material
+        - Purchase of Packing Material
+        - Purchase of Other Material
+        - Purchase of Stock In Trade
+        - Opening Stock
+        - Closing Stock
+        - Direct Labour
+        - Factory Overheads
+      
+      Employee Benefits Expenses:
+        - Salaries and Wages
+        - Staff Welfare
+        - Provident Fund Contribution
+        - Gratuity
+        - Leave Encashment
+      
+      Finance Costs:
+        - Interest on Term Loans
+        - Interest on Working Capital
+        - Bank Charges
+        - Other Borrowing Costs
+      
+      Depreciation and Amortization Expense:
+        - Depreciation on Buildings
+        - Depreciation on Plant & Machinery
+        - Depreciation on Vehicles
+        - Amortization of Intangibles
+      
+      Other Expenses:
+        - Rent
+        - Electricity and Water
+        - Repairs and Maintenance
+        - Insurance
+        - Legal and Professional Fees
+        - Travelling and Conveyance
+        - Advertisement and Marketing
+        - Office Expenses
+        - Communication Expenses
+        - Printing and Stationery
+  
+  Balance Sheet:
+    classification_3:
+      - Fixed Assets
+      - Current Assets
+      - Current Liabilities
+      - Non-Current Liabilities
+      - Equity and Reserves
+    
+    classification_4:
+      Fixed Assets:
+        - Land and Building
+        - Plant and Machinery
+        - Furniture and Fixtures
+        - Vehicles
+        - Computers
+        - Intangible Assets
+      
+      Current Assets:
+        - Inventories
+        - Trade Receivables
+        - Cash and Bank Balance
+        - Other Current Assets
+        - Loans and Advances
+      
+      Current Liabilities:
+        - Trade Payables
+        - Short Term Borrowings
+        - Other Current Liabilities
+        - Provisions
+      
+      Non-Current Liabilities:
+        - Long Term Borrowings
+        - Deferred Tax Liabilities
+        - Long Term Provisions
+      
+      Equity and Reserves:
+        - Share Capital
+        - Reserves and Surplus
+        - Retained Earnings
+
+# Model Configuration
+model:
+  name: ledger_classifier
+  architecture: transformer  # Options: transformer, lstm, cnn
+  embedding_dim: 128
+  hidden_dim: 256
+  num_layers: 3
+  dropout: 0.3
+  learning_rate: 0.001
+  batch_size: 32
+  epochs: 50
+  validation_split: 0.2
+  early_stopping_patience: 10
+  
+# Transformer specific settings
+transformer:
+  pretrained_model: sentence-transformers/all-MiniLM-L6-v2
+  max_length: 64
+  fine_tune: true
+  freeze_base: false
+
+# Training Configuration
+training:
+  optimizer: adam
+  loss_function: sparse_categorical_crossentropy
+  metrics:
+    - accuracy
+    - precision
+    - recall
+  use_class_weights: true
+  augmentation: true
+  
+# Excel Integration
+excel:
+  input_column: Ledger Name
+  output_columns:
+    - Classification 3
+    - Classification 4
+  confidence_threshold: 0.7
+  review_low_confidence: true
+  
+# Paths
+paths:
+  model_dir: models
+  data_dir: data
+  logs_dir: logs
+  checkpoints_dir: checkpoints
