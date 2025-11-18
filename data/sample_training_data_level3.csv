@@ -1,0 +1,78 @@
+Ledger Name,Classification 3
+Purchase of Raw Materials,Cost of Goods Sold
+Purchase of Packing Materials,Cost of Goods Sold
+Opening Stock of Finished Goods,Cost of Goods Sold
+Purchase of Steel Sheets,Cost of Goods Sold
+Purchase of Plastic Material,Cost of Goods Sold
+Raw Material Consumption,Cost of Goods Sold
+Direct Labour Charges,Cost of Goods Sold
+Factory Wages,Cost of Goods Sold
+Manufacturing Expenses,Cost of Goods Sold
+Production Overhead,Cost of Goods Sold
+Salaries and Wages,Employee Benefits Expenses
+Staff Welfare Expenses,Employee Benefits Expenses
+Provident Fund Contribution,Employee Benefits Expenses
+Gratuity Payment,Employee Benefits Expenses
+Employee Insurance Premium,Employee Benefits Expenses
+Staff Training Expenses,Employee Benefits Expenses
+Leave Encashment,Employee Benefits Expenses
+Bonus to Employees,Employee Benefits Expenses
+Medical Reimbursement,Employee Benefits Expenses
+Employee Transport,Employee Benefits Expenses
+Interest on Bank Loan,Finance Costs
+Interest on Term Loan,Finance Costs
+Bank Charges,Finance Costs
+Interest on Working Capital,Finance Costs
+Loan Processing Fees,Finance Costs
+Interest on Overdraft,Finance Costs
+Financial Charges,Finance Costs
+Letter of Credit Charges,Finance Costs
+Depreciation on Plant and Machinery,Depreciation and Amortization Expense
+Depreciation on Buildings,Depreciation and Amortization Expense
+Depreciation on Vehicles,Depreciation and Amortization Expense
+Depreciation on Furniture,Depreciation and Amortization Expense
+Amortization of Goodwill,Depreciation and Amortization Expense
+Amortization of Software,Depreciation and Amortization Expense
+Depreciation on Computers,Depreciation and Amortization Expense
+Rent Expenses,Other Expenses
+Electricity Charges,Other Expenses
+Water Charges,Other Expenses
+Repairs and Maintenance,Other Expenses
+Legal and Professional Fees,Other Expenses
+Advertisement Expenses,Other Expenses
+Travelling Expenses,Other Expenses
+Conveyance Expenses,Other Expenses
+Office Expenses,Other Expenses
+Telephone Expenses,Other Expenses
+Internet Charges,Other Expenses
+Printing and Stationery,Other Expenses
+Insurance Premium,Other Expenses
+Audit Fees,Other Expenses
+Consultancy Charges,Other Expenses
+Security Charges,Other Expenses
+Housekeeping Expenses,Other Expenses
+Vehicle Maintenance,Other Expenses
+Postage and Courier,Other Expenses
+Trade Receivables,Trade Receivables
+Sundry Debtors,Trade Receivables
+Bills Receivable,Trade Receivables
+Debtors - Domestic,Trade Receivables
+Debtors - Export,Trade Receivables
+Cash in Hand,Cash and Bank Balance
+Cash at Bank,Cash and Bank Balance
+Bank Account - Current,Cash and Bank Balance
+Bank Account - Savings,Cash and Bank Balance
+Fixed Deposit with Bank,Cash and Bank Balance
+Advances to Suppliers,Loans and Advances
+Security Deposits,Loans and Advances
+Advance Tax Payment,Loans and Advances
+Loans to Employees,Loans and Advances
+Staff Advances,Loans and Advances
+Prepaid Expenses,Other Assets
+Advance Rent,Other Assets
+Advance Insurance,Other Assets
+Deferred Revenue Expenditure,Other Assets
+Investments in Mutual Funds,Investments
+Investments in Shares,Investments
+Investments in Bonds,Investments
+Long Term Investments,Investments

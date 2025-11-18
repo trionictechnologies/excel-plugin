@@ -1,0 +1,121 @@
+Ledger Name,Classification 3,Classification 4
+Purchase of Raw Cotton,Cost of Goods Sold,Purchase of Raw Material
+Purchase of Steel Sheets,Cost of Goods Sold,Purchase of Raw Material
+Purchase of Plastic Material,Cost of Goods Sold,Purchase of Raw Material
+Purchase of Rubber,Cost of Goods Sold,Purchase of Raw Material
+Purchase of Chemicals,Cost of Goods Sold,Purchase of Raw Material
+Purchase of Fabric,Cost of Goods Sold,Purchase of Raw Material
+Raw Material Import,Cost of Goods Sold,Purchase of Raw Material
+Purchase of Cartons,Cost of Goods Sold,Purchase of Packing Material
+Purchase of Boxes,Cost of Goods Sold,Purchase of Packing Material
+Purchase of Polybags,Cost of Goods Sold,Purchase of Packing Material
+Packaging Material Purchase,Cost of Goods Sold,Purchase of Packing Material
+Purchase of Wrapping Paper,Cost of Goods Sold,Purchase of Packing Material
+Purchase of Adhesives,Cost of Goods Sold,Purchase of Other Material
+Purchase of Consumables,Cost of Goods Sold,Purchase of Other Material
+Purchase of Spare Parts,Cost of Goods Sold,Purchase of Other Material
+Purchase of Tools,Cost of Goods Sold,Purchase of Other Material
+Purchase of Finished Goods,Cost of Goods Sold,Purchase of Stock In Trade
+Purchase of Trading Goods,Cost of Goods Sold,Purchase of Stock In Trade
+Goods Purchased for Resale,Cost of Goods Sold,Purchase of Stock In Trade
+Opening Stock - Raw Material,Cost of Goods Sold,Opening Stock
+Opening Stock - Finished Goods,Cost of Goods Sold,Opening Stock
+Opening Stock - WIP,Cost of Goods Sold,Opening Stock
+Opening Inventory,Cost of Goods Sold,Opening Stock
+Direct Labour Wages,Cost of Goods Sold,Direct Labour
+Production Workers Salary,Cost of Goods Sold,Direct Labour
+Manufacturing Labour Cost,Cost of Goods Sold,Direct Labour
+Factory Supervisor Salary,Cost of Goods Sold,Factory Overheads
+Factory Rent,Cost of Goods Sold,Factory Overheads
+Factory Electricity,Cost of Goods Sold,Factory Overheads
+Factory Maintenance,Cost of Goods Sold,Factory Overheads
+Administrative Staff Salary,Employee Benefits Expenses,Salaries and Wages
+Marketing Team Salary,Employee Benefits Expenses,Salaries and Wages
+Office Staff Wages,Employee Benefits Expenses,Salaries and Wages
+Management Remuneration,Employee Benefits Expenses,Salaries and Wages
+Executive Salaries,Employee Benefits Expenses,Salaries and Wages
+Sales Team Salary,Employee Benefits Expenses,Salaries and Wages
+Employee Medical Insurance,Employee Benefits Expenses,Staff Welfare
+Staff Canteen Expenses,Employee Benefits Expenses,Staff Welfare
+Employee Recreation,Employee Benefits Expenses,Staff Welfare
+Staff Uniform Expenses,Employee Benefits Expenses,Staff Welfare
+Employee Welfare Fund,Employee Benefits Expenses,Staff Welfare
+Provident Fund Employer Contribution,Employee Benefits Expenses,Provident Fund Contribution
+EPF Contribution,Employee Benefits Expenses,Provident Fund Contribution
+Pension Fund Contribution,Employee Benefits Expenses,Provident Fund Contribution
+Gratuity Provision,Employee Benefits Expenses,Gratuity
+Gratuity Payment,Employee Benefits Expenses,Gratuity
+Leave Encashment Payment,Employee Benefits Expenses,Leave Encashment
+Privilege Leave Encashment,Employee Benefits Expenses,Leave Encashment
+Interest on Term Loan from Bank,Finance Costs,Interest on Term Loans
+Interest on Long Term Borrowings,Finance Costs,Interest on Term Loans
+Interest on Vehicle Loan,Finance Costs,Interest on Term Loans
+Interest on Equipment Loan,Finance Costs,Interest on Term Loans
+Interest on Working Capital Loan,Finance Costs,Interest on Working Capital
+Interest on Cash Credit,Finance Costs,Interest on Working Capital
+Interest on Overdraft,Finance Costs,Interest on Working Capital
+Processing Charges,Finance Costs,Bank Charges
+Bank Service Charges,Finance Costs,Bank Charges
+Letter of Credit Charges,Finance Costs,Bank Charges
+Bank Guarantee Charges,Finance Costs,Bank Charges
+Loan Documentation Charges,Finance Costs,Other Borrowing Costs
+Loan Processing Fees,Finance Costs,Other Borrowing Costs
+Financial Advisory Charges,Finance Costs,Other Borrowing Costs
+Depreciation - Factory Building,Depreciation and Amortization Expense,Depreciation on Buildings
+Depreciation - Office Building,Depreciation and Amortization Expense,Depreciation on Buildings
+Depreciation - Warehouse,Depreciation and Amortization Expense,Depreciation on Buildings
+Depreciation - Machinery,Depreciation and Amortization Expense,Depreciation on Plant & Machinery
+Depreciation - Equipment,Depreciation and Amortization Expense,Depreciation on Plant & Machinery
+Depreciation - Tools,Depreciation and Amortization Expense,Depreciation on Plant & Machinery
+Depreciation - Production Plant,Depreciation and Amortization Expense,Depreciation on Plant & Machinery
+Depreciation - Company Vehicle,Depreciation and Amortization Expense,Depreciation on Vehicles
+Depreciation - Delivery Van,Depreciation and Amortization Expense,Depreciation on Vehicles
+Depreciation - Motor Car,Depreciation and Amortization Expense,Depreciation on Vehicles
+Amortization of Software,Depreciation and Amortization Expense,Amortization of Intangibles
+Amortization of Patent,Depreciation and Amortization Expense,Amortization of Intangibles
+Amortization of Trademark,Depreciation and Amortization Expense,Amortization of Intangibles
+Amortization of License,Depreciation and Amortization Expense,Amortization of Intangibles
+Office Rent,Other Expenses,Rent
+Warehouse Rent,Other Expenses,Rent
+Godown Rent,Other Expenses,Rent
+Shop Rent,Other Expenses,Rent
+Power and Fuel,Other Expenses,Electricity and Water
+Electricity Bill,Other Expenses,Electricity and Water
+Water Charges,Other Expenses,Electricity and Water
+Building Maintenance,Other Expenses,Repairs and Maintenance
+Machinery Repairs,Other Expenses,Repairs and Maintenance
+Equipment Maintenance,Other Expenses,Repairs and Maintenance
+Vehicle Repairs,Other Expenses,Repairs and Maintenance
+Computer Maintenance,Other Expenses,Repairs and Maintenance
+General Insurance Premium,Other Expenses,Insurance
+Fire Insurance,Other Expenses,Insurance
+Vehicle Insurance,Other Expenses,Insurance
+Property Insurance,Other Expenses,Insurance
+Audit Fees,Other Expenses,Legal and Professional Fees
+Legal Charges,Other Expenses,Legal and Professional Fees
+Consultancy Charges,Other Expenses,Legal and Professional Fees
+Professional Tax,Other Expenses,Legal and Professional Fees
+Tax Consultant Fees,Other Expenses,Legal and Professional Fees
+Business Travel,Other Expenses,Travelling and Conveyance
+Employee Travel Expenses,Other Expenses,Travelling and Conveyance
+Local Conveyance,Other Expenses,Travelling and Conveyance
+Domestic Travel,Other Expenses,Travelling and Conveyance
+Foreign Travel,Other Expenses,Travelling and Conveyance
+Marketing Campaign,Other Expenses,Advertisement and Marketing
+Advertising Expenses,Other Expenses,Advertisement and Marketing
+Sales Promotion,Other Expenses,Advertisement and Marketing
+Digital Marketing,Other Expenses,Advertisement and Marketing
+Brand Promotion,Other Expenses,Advertisement and Marketing
+Stationery Expenses,Other Expenses,Office Expenses
+Office Supplies,Other Expenses,Office Expenses
+Pantry Expenses,Other Expenses,Office Expenses
+Housekeeping,Other Expenses,Office Expenses
+Security Services,Other Expenses,Office Expenses
+Telephone Bill,Other Expenses,Communication Expenses
+Mobile Charges,Other Expenses,Communication Expenses
+Internet Charges,Other Expenses,Communication Expenses
+Broadband Expenses,Other Expenses,Communication Expenses
+Printing Charges,Other Expenses,Printing and Stationery
+Photocopying Expenses,Other Expenses,Printing and Stationery
+Binding Charges,Other Expenses,Printing and Stationery
+Stationery Purchase,Other Expenses,Printing and Stationery
